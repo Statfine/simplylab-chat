@@ -1,0 +1,40 @@
+{
+  "name": "simplylab-chat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@byteplus/veplayer": "1.8.5-rc.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
+    "crypto-js": "^4.2.0",
+    "fflate": "^0.8.2",
+    "html2pdf.js": "^0.10.1",
+    "jose": "^5.2.4",
+    "js-base64": "^3.7.7",
+    "lodash": "^4.17.21",
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-tracked": "^1.7.14",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
