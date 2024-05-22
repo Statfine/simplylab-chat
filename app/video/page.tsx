@@ -1,6 +1,6 @@
 "use client"; // This is a client component
 import { useRef, useEffect } from "react";
-import VePlayer from "@byteplus/veplayer";
+import VePlayer, { Events } from "@byteplus/veplayer";
 import "@byteplus/veplayer/index.min.css";
 
 /**
@@ -43,6 +43,10 @@ export default function Video() {
           },
         ],
       },
+      rotate: {
+        clockwise: false,
+        innerRotate: true,
+      },
       hls: {
         retryCount: 5, // 重试 3 次，默认值
         retryDelay: 1000, // 每次重试间隔 1 秒，默认值
@@ -55,20 +59,20 @@ export default function Video() {
         oftenWaitingTime: 100,
         longWaitingTime: 100,
         // isNeedAutoDemote: true,
-        demotePriority: ['uhd', 'hd', 'ld']
+        demotePriority: ["uhd", "hd", "ld"],
       },
       playList: [
         {
           url: "//voddemo-play.volcvod.com/e826c993a2444058915fb494c4fcdabb?a=0&auth_key=1751882567-8882fc603afb49edbb2665e62c95c69b-0-32390643c8637e4d3e46e87a684d5a4b&br=660&bt=660&cd=0%7C0%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=3&er=0&l=20220708180015010204028132080F0005&lr=&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amg6c2o0aTg6ZTQzNGRnM0ApZzg6ZzkzZTxoN2QzNGY3NWdfZy9gMHFrYTBgLS1kYy9zc2IwNS4wM2NhYjZhMi4wNTY6Yw%3D%3D&vl=&vr=",
-          definition: 'uhd', // 清晰度
+          definition: "uhd", // 清晰度
         },
         {
           url: "//voddemo-play.volcvod.com/c02067c4c6dd48069bf1ad10f29d9624?a=0&auth_key=1751882605-59de01aa4b9e4e248904483358c07d46-0-abbe728b89a8f326dcab7dcb347f6cff&br=460&bt=460&cd=0%7C0%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=2&er=0&l=2022070818005301020810207720108FFC&lr=&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amg6c2o0aTg6ZTQzNGRnM0ApZWk2ZDY3OWQ0N2k7Nmk0Z2dfZy9gMHFrYTBgLS1kYy9zc2BjYzYxMjY1YTUtYzZhMl46Yw%3D%3D&vl=&vr=",
-          definition: 'hd', // 清晰度
+          definition: "hd", // 清晰度
         },
         {
           url: "//voddemo-play.volcvod.com/181c21bebdde4fb3998aed8d2440ca9d?a=0&auth_key=1751882631-a0bf23d4f8bf4b54927566d94ee85ede-0-fff818e3041b21ee9d2e4daec56e916b&br=299&bt=299&cd=0%7C0%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=1&er=0&l=2022070818011901020810207720109B42&lr=&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amg6c2o0aTg6ZTQzNGRnM0ApaTtpODxnaWRkN2Q4aTc1O2dfZy9gMHFrYTBgLS1kYy9zc2A1YmJeMS8vYi5gLy9eYi46Yw%3D%3D&vl=&vr=",
-          definition: 'ld',
+          definition: "ld",
           definitionTextKey: "LD",
         },
       ],
@@ -96,6 +100,22 @@ export default function Video() {
     };
 
     playerSdk.current = new VePlayer(config);
+
+    // playerSdk.current!.on(Events.PLAYER_FOCUS, (e: any) => {
+    //   console.log(
+    //     "=====>Events.PLAYER_FOCUS",
+    //     playerSdk.current!.player.paused
+    //   );
+    //   if (playerSdk.current?.player?.paused) playerSdk.current?.player?.play();
+    //   else alert(1);
+    // });
+    // playerSdk.current!.on(Events.PLAYER_BLUR, (e: any) => {
+    //   console.log(
+    //     "=====>Events.PLAYER_BLUR",
+    //     playerSdk.current!.player.paused,
+    //     e
+    //   );
+    // });
   };
 
   const handelChangeDefinition = () => {
@@ -104,6 +124,11 @@ export default function Video() {
       definition: "hd", // 对应 playList 中配置的 definition 值
       url: "//voddemo-play.volcvod.com/c02067c4c6dd48069bf1ad10f29d9624?a=0&auth_key=1751882605-59de01aa4b9e4e248904483358c07d46-0-abbe728b89a8f326dcab7dcb347f6cff&br=460&bt=460&cd=0%7C0%7C0&ch=0&cr=0&cs=0&cv=1&dr=0&ds=2&er=0&l=2022070818005301020810207720108FFC&lr=&mime_type=video_mp4&net=0&pl=0&qs=0&rc=amg6c2o0aTg6ZTQzNGRnM0ApZWk2ZDY3OWQ0N2k7Nmk0Z2dfZy9gMHFrYTBgLS1kYy9zc2BjYzYxMjY1YTUtYzZhMl46Yw%3D%3D&vl=&vr=", // 对应低清晰度的视频流地址
     });
+  };
+
+  const handleVideo = () => {
+    if (playerSdk.current?.player?.paused) playerSdk.current?.player?.play();
+    else playerSdk.current?.player?.pause();
   };
 
   return (
@@ -117,9 +142,14 @@ export default function Video() {
           position: "relative",
           margin: "0 auto",
         }}
+        onClick={handleVideo}
       />
-      <div onClick={handelChangeDefinition} style={{ color: '#000'}}>高清</div>
-      <div onClick={initVideo} style={{ color: '#000'}}>init</div>
+      <div onClick={handelChangeDefinition} style={{ color: "#000" }}>
+        高清
+      </div>
+      <div onClick={initVideo} style={{ color: "#000" }}>
+        init
+      </div>
     </div>
   );
 }
